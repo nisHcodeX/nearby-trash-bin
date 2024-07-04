@@ -1,0 +1,39 @@
+.trashbin-header{
+    height: 80px;
+    box-shadow: rgb(199, 235, 255) 0px 0px 2px, rgb(199, 235, 255) 0px 2px 6px -4px;
+}
+
+.trashbin-content{
+    margin-top: 120px;
+    max-width: 600px;
+    min-height: calc(100vh - 200px);
+}
+
+.trashbin-footer{
+    width: 100%;
+    height: 80px;
+    box-shadow: rgb(199, 235, 255) 0px 0px 2px, rgb(199, 235, 255) 0px 2px 6px -4px;
+    background-color: rgba(var(--bs-tertiary-bg-rgb)) !important;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    .footer-link{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        a{
+            text-decoration: none;
+        }
+    }
+}
+
+.nav-bar-logo{
+    width: 50px;
+    height: auto;
+}

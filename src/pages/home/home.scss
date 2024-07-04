@@ -1,0 +1,26 @@
+.home-trash-bin{
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 190px;
+    position: absolute;
+    top: 205px;
+    left: 115px;
+    background-position-x: center;
+}
+.home-trash-bin-wrapper{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 80%;
+    border-radius: 10px 10px 100px 100px;
+    box-shadow: rgb(138, 215, 255) 0px 0px 2px, rgb(138, 215, 255) 0px 6px 12px -8px;
+}
+.home-trash-bin-img-wrapper{
+    width: 100%;
+    border-radius: 10px 10px 100px 100px;
+    transition: all .5s ease;
+}
+.home-trash-bin-text-container{
+    margin-top: 8rem;
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types"],
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*", "./declarations.d.ts"]
+}
