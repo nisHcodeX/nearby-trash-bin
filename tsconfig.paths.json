@@ -5,7 +5,12 @@
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@components/*": ["components/*"],
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+      "@constant/*": ["constant/*"],
+      "@store/*": ["store/*"],
+      "@core/*": ["core/*"],
+      "@hooks/*": ["hooks/*"],
+      "@api/*": ["api/*"]
     }
   }
 }

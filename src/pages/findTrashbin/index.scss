@@ -8,3 +8,28 @@
         height: 58px;
     }
 }
+
+.trash-type{
+    background: #0BDA51;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    color: #fff;
+    label{
+        font-size: 19px;
+        text-transform: uppercase;
+    }
+}
+
+.trash-type-btn-container{
+    gap: 20px;
+    flex-grow:1;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.selected-trash-type{
+    box-shadow: #00FFFF 0px 0px 0px 6px;
+}

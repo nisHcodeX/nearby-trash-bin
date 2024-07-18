@@ -1,4 +1,6 @@
+import { useUserSignupMutation } from '@api/auth';
 import TrashBinCard from '@components/card';
+import { USER_TYPES } from '@constant/index';
 import React, { useState } from 'react'
 
 const TrashBinSingIn = () => {
@@ -7,7 +9,11 @@ const TrashBinSingIn = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [userSignup] = useUserSignupMutation();
 
+  const loginSignupAssync = async () => {
+    await userSignup({ email, name,password, phoneNumber, userType : USER_TYPES.USER });
+  }
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('Email:', email);
@@ -15,6 +21,7 @@ const TrashBinSingIn = () => {
     console.log('confirmPassword:', confirmPassword);
     console.log('name:', name);
     console.log('phoneNumber:', phoneNumber);
+    loginSignupAssync()
   }
   return (
     <TrashBinCard title='Youre About to Signup'>
