@@ -2,11 +2,16 @@ import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@re
 console.log('process.env.REACT_APP_SERVER_PATH', process.env.REACT_APP_SERVER_PATH)
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_SERVER_PATH,
-  // prepareHeaders(headers) {
+  prepareHeaders(headers) {
 
-  //   //headers.set('Authorization', `Bearer ${token}`);
-  //   return headers;
-  // }
+    const token = ''; //TODO: Get token here.
+
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return headers;
+  }
 });
 
 export const baseCustomQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {

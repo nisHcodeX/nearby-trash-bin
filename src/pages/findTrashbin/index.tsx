@@ -47,17 +47,17 @@ const FindTrashBin: React.FC = () => {
                 Organic
               </label>
             </div>
-            <div className={`trash-type mt-3 ${isPaper && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.PAPER)}>
+            <div className={`trash-type paper mt-3 ${isPaper && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.PAPER)}>
               <label className="form-check-label" htmlFor="trashBinPaper">
                 Paper
               </label>
             </div>
-            <div className={`trash-type mt-3 ${isPlastic && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.PLASTIC)}>
+            <div className={`trash-type plastic mt-3 ${isPlastic && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.PLASTIC)}>
               <label className="form-check-label" htmlFor="trashBinPlastic">
                 Plastic
               </label>
             </div>
-            <div className={`trash-type mt-3 ${isGlass && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.GLASS)}>
+            <div className={`trash-type glass mt-3 ${isGlass && 'selected-trash-type'}`} onClick={() => onTrashTypeClick(TRASH_TYPES.GLASS)}>
               <label className="form-check-label" htmlFor="trashBinGlass">
                 Glass
               </label>

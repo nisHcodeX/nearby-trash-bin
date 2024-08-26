@@ -14,6 +14,9 @@ const TrashBinProfile = () => {
                 <div className='mt-4'>my email</div>
                 <div className='mt-4'>my number</div>
                 <h3 className='mt-4 text-success'>User activities</h3>
+                <div className='mt-4' >search a trash bin</div>
+                <div className='mt-4'>successfully dispose trash to bin 78562</div>
+                <div className='mt-4'>add a trash bin to system 7856</div>
             </div>
         </TrashBinCard>
     )

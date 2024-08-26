@@ -9,22 +9,21 @@ export const nearByTrashBinAuthAPI = createApi({
   endpoints: (builder) => ({
     userLogin: builder.mutation<UserLoggedData, UserLoginData>({
       query: (data) => ({
-        url:`User/login`,
+        url: `User/login`,
         body: data,
         method: "POST"
-    }),
+      }),
     }),
     userSignup: builder.mutation<void, UserSigupData>({
       query: (data) => ({
-        url:`User/signup`,
+        url: `User/signup`,
         body: data,
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         }
+      }),
     }),
-    }),
-
   }),
 });
 

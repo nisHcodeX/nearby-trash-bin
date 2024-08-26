@@ -10,7 +10,14 @@ const TrashBinLogin: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const loginUserAssync = async () => {
-    await userLogin({ email, password });
+    userLogin({ email, password })
+      .unwrap()
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
