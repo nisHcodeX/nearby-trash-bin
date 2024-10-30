@@ -7,4 +7,12 @@
     .login-btn{
         height: 58px;
     }
+    .map-wrapper{
+        width: 100%;
+        height: 300px;
+        border: 1px solid black;
+    }
+    .map-input-container{
+        flex-direction: column;
+    }
 }

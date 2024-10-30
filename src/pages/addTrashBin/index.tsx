@@ -1,8 +1,9 @@
 import { TrashBinLogo } from '@assets/img';
 import TrashBinCard from '@components/card';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './index.scss';
 import { TRASH_TYPES } from '@constant/index';
+import CameraComponent from '@components/photoUploader';
 
 const AddTrashBin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,11 @@ const AddTrashBin: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [binUplaodType, setBinUplaodType] = useState(1);
+
+  useEffect(() => {
+    console.log('binUplaodType', binUplaodType)
+  }, [binUplaodType])
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,9 +23,18 @@ const AddTrashBin: React.FC = () => {
   }
   return (
     <TrashBinCard title='Add Trash Bin'>
+
       <form onSubmit={onSubmit}>
+        <CameraComponent />
         <div className="form-group d-flex flex-column align-items-start mb-2">
-          <label htmlFor="exampleInputEmail1" className='mb-2'>Name</label>
+          <select className="form-select mb-2 p-3" aria-label="Default select example"
+            value={binUplaodType}
+            onChange={(e) => setBinUplaodType(parseInt(e.target.value))}
+          >
+            <option value="2">Use Camera</option>
+            <option value="1">Upload Photo</option>
+          </select>
+          <label className='mb-2'>Trash Bin Photo</label>
           <input
             type="file"
             className="form-control p-3 mb-2"
@@ -69,7 +84,7 @@ const AddTrashBin: React.FC = () => {
           </div>
         </div>
         <div>
-          <button type="submit" className="btn btn-primary w-100 p-2 mt-2">SIGNUP</button>
+          <button type="submit" className="btn btn-primary w-100 p-2 mt-2">Add trash bin</button>
         </div>
       </form>
     </TrashBinCard>

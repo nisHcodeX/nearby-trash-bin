@@ -1,58 +1,108 @@
-import { TrashBinLogo } from '@assets/img';
 import TrashBinCard from '@components/card';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react';
 import './index.scss';
+import { DirectionsRenderer, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { deprecations } from 'sass';
+
+const containerStyle = {
+  width: "100%",
+  height: "100%",
+};
+
 
 const TrashBinAboutUs: React.FC = () => {
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
+  const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null)
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      setCenter({ lat: 6.053519, lng: 80.220978 });
+    });
+  }, []);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const onLoad = useCallback((map: google.maps.Map) => {
+    if (center) {
+      const bounds = new google.maps.LatLngBounds(center);
+      map.fitBounds(bounds);
+    }
+    setMap(map);
+    map.setZoom(10)
+  }, [center]);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: 'AIzaSyB9mlNrPmt27rl_SK5d2jgVDw3rszWfBfI', // Replace with your actual API key
+  });
+
+  async function calculateRoute() {
+
+    const directioValue = { lat: 6.142658661791, lng: 80.54002282138 }
+    if (!center && !directioValue) {
+      return
+    }
+    if (center) {
+      const directionsService = new google.maps.DirectionsService()
+      const results = await directionsService.route({
+        origin: center,
+        destination: directioValue,
+        // eslint-disable-next-line no-undef
+        travelMode: google.maps.TravelMode.DRIVING,
+      })
+      setDirectionsResponse(results)
+    }
   }
+
+
   return (
-    <TrashBinCard title='Welcome to Login'>
+    <TrashBinCard title='Map View'>
       <div className='login-container'>
-      <div className='login-image-container mb-4'>
-        <img src={TrashBinLogo} className='login-img-logo'/>
-      </div>
-      <form onSubmit={onSubmit}>
-        <div className="form-group d-flex flex-column align-items-start">
-          <label htmlFor="exampleInputEmail1" className='mb-2'>Email address</label>
-          <input 
-          type="email" 
-          className="form-control p-3 mb-2" id="exampleInputEmail1" 
-          aria-describedby="emailHelp" 
-          placeholder="Enter email"
-          onChange={(e) => setEmail(e.target.value)} 
-           />
-          <small id="emailHelp" className="form-text text-muted mb-3">We'll never share your email with anyone else.</small>
+        <div className="map-input-container d-flex gap-2 mb-4">
+          <div className="d-flex gap-2">
+            <button type="button" className="btn btn-success" onClick={() => calculateRoute()}>Calculate Route</button>
+            <button type="button" className="btn btn-success" onClick={() => map?.panTo(center!)}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
+                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+              </svg>
+            </button>
+            <button type="button" className="btn btn-success" onClick={() => setDirectionsResponse(null)} style={{marginLeft: 'auto'}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div className="form-group d-flex flex-column align-items-start">
-          <label htmlFor="exampleInputPassword1" className='mb-2'>Password</label>
-          <input 
-          type="password" 
-          className="form-control p-3 mb-3" 
-          id="exampleInputPassword1" 
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)} 
-          />
+        <div className="map-wrapper">
+          {isLoaded && center && (
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+              onLoad={onLoad}
+              onUnmount={onUnmount}
+              options={{
+                // zoomControl: false,
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
+              }}
+            >
+              <Marker position={center} />
+              {directionsResponse && (
+                <DirectionsRenderer directions={directionsResponse} />
+              )}
+            </GoogleMap>
+          )}
         </div>
-        {/* <div className="form-check mb-2">
-          <input type="checkbox" className="form-check-input " id="exampleCheck1" />
-          <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-        </div> */}
-        <div>
-          <button type="submit" className="btn btn-primary w-100 p-2 mt-3 mb-3 login-btn">LOGIN</button>
-        </div>
-      </form>
-      <p className="mt-2 text-center mb-3 log-text-new"><span>Don’t have an account?   <a href="/signin">Sign Up</a></span></p>
       </div>
     </TrashBinCard>
-  )
-}
+  );
+};
 
 export default TrashBinAboutUs;

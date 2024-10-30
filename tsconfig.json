@@ -9,7 +9,8 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    // "allowJs": true
   },
   "include": ["src/**/*", "./declarations.d.ts"]
 }
