@@ -1,6 +1,14 @@
-import { AddTrashBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
+import { AddTrashBin, LocationData, SearchBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseCustomQuery } from './interceptorSlice';
+
+const base64ToBlob = (base64: string, contentType = 'image/png') => {
+    const byteCharacters = atob(base64.split(',')[1]); // Remove the Base64 prefix (e.g., `data:image/png;base64,`)
+    const byteNumbers = Array.from(byteCharacters, (char) => char.charCodeAt(0));
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+};
+
 
 // Define a service using a base URL and expected endpoints
 export const nearByTrashBinAPI = createApi({
@@ -8,20 +16,34 @@ export const nearByTrashBinAPI = createApi({
     baseQuery: baseCustomQuery,
     endpoints: (builder) => ({
         addTrashBin: builder.mutation<TrashBinRes, AddTrashBin>({
-            query: (data) => ({
-                url: `TrashBin/add`,
-                body: data,
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
+            query: (data) => {
+                const formData = new FormData();
+                if (data.Image.startsWith("data:image")) {
+                    const contentType = data.Image.substring(data.Image.indexOf(":") + 1, data.Image.indexOf(";"));
+                    const imageBlob = base64ToBlob(data.Image, contentType);
+                    formData.append("Image", imageBlob, "image.png"); // Append as a file with a name
+                } else {
+                    console.error("Invalid image format");
                 }
-            }),
-        }),
-        findTrashBin: builder.mutation<void, UserSigupData>({
+                formData.append("Latitude", data.Latitude.toString());
+                formData.append("Longitude", data.Longitude.toString());
+                formData.append("Organic", data.Organic.toString());
+                formData.append("Paper", data.Paper.toString());
+                formData.append("Plastic", data.Plastic.toString());
+                formData.append("Glass", data.Glass.toString());
+                formData.append("UserId", data.UserId);
+        
+                return {
+                    url: `TrashBin/add`,
+                    body: formData,
+                    method: "POST",
+                };
+            },
+        }),     
+        findTrashBin: builder.mutation<TrashBinRes[], SearchBin>({
             query: (data) => ({
-                url: `TrashBin/search`,
-                body: data,
-                method: "POST",
+                url: `TrashBin/search?lat=${data.lat}&lon=${data.lng}&radius=${data.radius}`,
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json'
                 }

@@ -30,7 +30,7 @@ const routes: RouteObject[] = [
     element: <TrashBinWrapper><TrashBinHome /></TrashBinWrapper>,
   },
   {
-    path: "/landing",
+    path: "/list",
     element: <TrashBinWrapper><TrashBinLanding /></TrashBinWrapper>,
   },
   {

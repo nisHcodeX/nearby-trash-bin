@@ -5,14 +5,16 @@ type Props = {
   initialLat?: number;
   initialLng?: number;
   apiKey?: string;
+  disabled?: boolean
   results?: (data: { 
     address: string; 
     lat: number; 
     lng: number; 
+    
   }) => void; 
 };
 
-const GeocodingAutocomplete: FC<Props> = ({ initialLat, initialLng, results }) => {
+const GeocodingAutocomplete: FC<Props> = ({ initialLat, initialLng, results, disabled }) => {
   const [address, setAddress] = useState<string>("");
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -48,6 +50,7 @@ const GeocodingAutocomplete: FC<Props> = ({ initialLat, initialLng, results }) =
 
   return (
       <input
+        disabled={disabled ?? false}
         id="locationInput"
         type="text"
         className="form-control p-3 mb-2"

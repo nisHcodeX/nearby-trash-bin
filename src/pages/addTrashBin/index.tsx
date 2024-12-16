@@ -21,7 +21,7 @@ const AddTrashBin: React.FC = () => {
   const [addTrashBin, { isError, isLoading, isSuccess }] = useAddTrashBinMutation();
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [locationData, setLocationData] = React.useState<LocationData | undefined>(undefined)
+  const [locationData, setLocationData] = useState<LocationData | undefined>(undefined)
   const session = getSession();
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const AddTrashBin: React.FC = () => {
   }, [binUplaodType, photo]);
 
   const addTrashBinAssync = async () => {
-    console.log('locationData', locationData)
     if (locationData && session?.id)
       await addTrashBin({ Glass: glass, Image: photo, Plastic: plastic, Paper: paper, Latitude: locationData.lat, Longitude: locationData?.lng, Organic: organic, UserId: session.id })
     else setShowError(true);

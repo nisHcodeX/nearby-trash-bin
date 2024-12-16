@@ -71,6 +71,11 @@ export interface  LocationData {
     lat: number,
     lng: number
 }
+export interface SearchBin {
+    radius: number;
+    lat: number,
+    lng: number
+}
 
 
 

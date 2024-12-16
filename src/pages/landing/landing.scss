@@ -1,11 +1,11 @@
-.home-trash-bin{
+.list-trash-bin{
     background-size: contain;
     background-repeat: no-repeat;
-    width: 200px;
-    height: 190px;
+    width: 160px;
+    height: 180px;
     position: absolute;
     top: 205px;
-    left: 115px;
+    left: 140px;
     background-position-x: center;
 }
 .home-trash-bin-wrapper{
@@ -21,6 +21,18 @@
     border-radius: 10px 10px 100px 100px;
     transition: all .5s ease;
 }
-.home-trash-bin-text-container{
-    margin-top: 8rem;
+.list-trash-bin-text-container{
+    margin-top: 4rem;
+}
+.glass{
+    background-color: #FF3366;
+}
+.paper{
+    background-color: #007FFF;
+}
+.organic{
+    background-color: #00E673;
+}
+.plastic{
+    background-color: #FF7F00;
 }

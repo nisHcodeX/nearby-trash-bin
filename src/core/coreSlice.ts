@@ -1,29 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Session } from "./interface";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Session, TrashBinRes } from "./interface";
+import { RootState } from "@store/store";
+import { TRASH_TYPES } from "@constant/index";
 
 interface CoreSlice {
-    session: Session | undefined;
-};
-
-const getSession = (): Session | undefined => {
-    const storeSession = localStorage.getItem('bin-ses');
-    if (storeSession) return JSON.parse(storeSession)
-    return undefined;
+    binData: TrashBinRes[] | undefined;
+    trashType: TRASH_TYPES | null
 };
 
 const initialState: CoreSlice = {
-    session: getSession()
+    binData: undefined,
+    trashType: null
 };
 
 const coreSlice = createSlice({
     name: 'core', initialState, reducers: {
-        getTrashBinSession() {
+        setTrashBinList: (state, action: PayloadAction<TrashBinRes[]>) => {
+            state.binData = action.payload;
         },
-        setTrashBinSession(state, action) {
-            state.session = action.payload
-        }
+        setTrasType: (state, action: PayloadAction<TRASH_TYPES>) => {
+            state.trashType = action.payload;
+        },
     }
 });
 
-export const { getTrashBinSession } = coreSlice.actions;
+export const { setTrashBinList, setTrasType } = coreSlice.actions;
+export const binListGetter = (state: RootState) => state.core.binData;
+export const trashTypeGetter = (state: RootState) => state.core.trashType;
 export default coreSlice.reducer;
