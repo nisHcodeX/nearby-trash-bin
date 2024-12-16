@@ -1,4 +1,4 @@
-import { AddTrashBin, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
+import { AddTrashBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseCustomQuery } from './interceptorSlice';
 
@@ -7,7 +7,7 @@ export const nearByTrashBinAPI = createApi({
     reducerPath: 'trashBinAPI',
     baseQuery: baseCustomQuery,
     endpoints: (builder) => ({
-        addTrashBin: builder.mutation<void, AddTrashBin>({
+        addTrashBin: builder.mutation<TrashBinRes, AddTrashBin>({
             query: (data) => ({
                 url: `TrashBin/add`,
                 body: data,

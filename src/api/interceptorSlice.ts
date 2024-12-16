@@ -1,11 +1,12 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { getCookiesValue } from '@utils/index';
 // console.log('process.env.REACT_APP_SERVER_PATH', process.env.REACT_APP_SERVER_PATH)
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_SERVER_PATH,
   prepareHeaders(headers) {
 
-    const token = localStorage.getItem('token'); 
-
+    const token = getCookiesValue('tb-u-ses'); 
+    console.log('token', token)
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }

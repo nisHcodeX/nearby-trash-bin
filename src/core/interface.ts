@@ -42,12 +42,34 @@ export interface AddTrashBin {
     "UserId": string
 }
 
+export interface TrashBinRes {
+    id: number;
+    latitude: number;
+    longitude: number;
+    imageUrl: string;
+    organic: boolean;
+    paper: boolean;
+    plastic: boolean;
+    glass: boolean;
+    createdDate: any
+    trashBinStatus: number;
+    appUserId: string;
+    appUser: any
+    feedbacks: any
+};
+
 export interface FindTrashBin {
     "name": string,
     "email": string,
     "phoneNumber": string,
     "password": string,
     "userType": USER_TYPES
+}
+
+export interface  LocationData {
+    address: string;
+    lat: number,
+    lng: number
 }
 
 
