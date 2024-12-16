@@ -22,7 +22,7 @@ const TrashBinHome = () => {
   }
   return (
     <>
-      <TrashBinCard title='Welcome Nishedha'>
+      <TrashBinCard title={`Welcome ${session?.name}`}>
         <>
           <div className='d-flex flex-column justify-content-center align-items-center gap-5'>
             <div className='home-trash-bin-wrapper p-4'>

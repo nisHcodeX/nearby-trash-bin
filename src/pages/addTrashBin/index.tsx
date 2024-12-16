@@ -1,4 +1,4 @@
-import { TrashBinLogo } from '@assets/img';
+import { DefaulTImage, TrashBinLogo } from '@assets/img';
 import TrashBinCard from '@components/card';
 import React, { useEffect, useRef, useState } from 'react'
 import './index.scss';
@@ -23,6 +23,17 @@ const AddTrashBin: React.FC = () => {
     e.preventDefault();
     console.log('e', e)
   }
+
+  const onPhotoUplaod = (e: any) => {
+    const file = e.target.files[0]; 
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        setPhoto(event.target.result); 
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   return (
     <TrashBinCard title='Add Trash Bin'>
 
@@ -43,9 +54,12 @@ const AddTrashBin: React.FC = () => {
               // id="exampleInputEmail1" 
               // aria-describedby="emailHelp" 
               placeholder="Add Trash bin photo"
-              onChange={(e) => setPhoto(e.target.value)}
+              onChange={onPhotoUplaod}
             />
           </div>
+        }
+        {binUplaodType == 2 &&
+            <img src={photo ? photo : DefaulTImage} alt="Captured" width={350} className='mb-2 rounded' />
         }
 
         {/* <div className="form-group d-flex flex-column align-items-start mb-2">
