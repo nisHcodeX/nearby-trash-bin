@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import './header.scss';
 import { TrashBinLogo } from '@assets/img';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '@utils/index';
 
 const TrashBinWrapper: React.FC<{ children: ReactElement }> = ({ children }: any) => {
     const navigate = useNavigate()
@@ -39,7 +40,7 @@ const TrashBinWrapper: React.FC<{ children: ReactElement }> = ({ children }: any
                                     <a className="nav-link" href="/profile">Profile</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/profile">Logout</a>
+                                    <a className="nav-link"style={{cursor: 'pointer'}}onClick={logoutUser}>Logout</a>
                                 </li>
                                 {/* <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

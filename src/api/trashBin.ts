@@ -4,7 +4,7 @@ import { baseCustomQuery } from './interceptorSlice';
 
 // Define a service using a base URL and expected endpoints
 export const nearByTrashBinAPI = createApi({
-    reducerPath: 'loginAPI',
+    reducerPath: 'trashBinAPI',
     baseQuery: baseCustomQuery,
     endpoints: (builder) => ({
         addTrashBin: builder.mutation<void, AddTrashBin>({

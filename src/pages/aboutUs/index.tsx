@@ -37,7 +37,7 @@ const TrashBinAboutUs: React.FC = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: 'AIzaSyB9mlNrPmt27rl_SK5d2jgVDw3rszWfBfI', // Replace with your actual API key
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?? "", 
   });
 
   async function calculateRoute() {
@@ -58,7 +58,7 @@ const TrashBinAboutUs: React.FC = () => {
     }
   }
 
-
+// 'AIzaSyB9mlNrPmt27rl_SK5d2jgVDw3rszWfBfI'
   return (
     <TrashBinCard title='Map View'>
       <div className='login-container'>

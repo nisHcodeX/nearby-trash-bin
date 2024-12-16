@@ -1,10 +1,10 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query';
-console.log('process.env.REACT_APP_SERVER_PATH', process.env.REACT_APP_SERVER_PATH)
+// console.log('process.env.REACT_APP_SERVER_PATH', process.env.REACT_APP_SERVER_PATH)
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_SERVER_PATH,
   prepareHeaders(headers) {
 
-    const token = ''; //TODO: Get token here.
+    const token = localStorage.getItem('token'); 
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);

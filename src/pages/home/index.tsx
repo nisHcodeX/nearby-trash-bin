@@ -3,16 +3,22 @@ import TrashBinCard from '@components/card';
 import './home.scss'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { getSession } from '@utils/index';
 
 const TrashBinHome = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const session = getSession();
 
-  const onFindTrashBinClick =()=>{
-      navigate('/findtrashbin');
+  const onFindTrashBinClick = () => {
+    session ?
+      navigate('/findtrashbin')
+      : navigate('/login');
   };
 
-  const onAddTrashBinClick =()=>{
-      navigate('/addtrashbin');
+  const onAddTrashBinClick = () => {
+    session ?
+      navigate('/addtrashbin')
+      : navigate('/login');
   }
   return (
     <>
@@ -21,7 +27,7 @@ const TrashBinHome = () => {
           <div className='d-flex flex-column justify-content-center align-items-center gap-5'>
             <div className='home-trash-bin-wrapper p-4'>
               <div className='home-trash-bin-img-wrapper'>
-                  <img className='home-trash-bin-img-wrapper' src={FindTrashBin}/>
+                <img className='home-trash-bin-img-wrapper' src={FindTrashBin} />
               </div>
               <div style={{ backgroundImage: `url(${TrashBin})` }} className='home-trash-bin  pt-3'>
                 <button type="button" className="btn btn-outline-secondary mt-4" onClick={onFindTrashBinClick}>Find trash bin</button>
@@ -34,8 +40,8 @@ const TrashBinHome = () => {
               </div>
             </div>
             <div className='home-trash-bin-wrapper p-4'>
-            <div className='home-trash-bin-img-wrapper'>
-                  <img className='home-trash-bin-img-wrapper' src={AddTrashBin}/>
+              <div className='home-trash-bin-img-wrapper'>
+                <img className='home-trash-bin-img-wrapper' src={AddTrashBin} />
               </div>
               <div style={{ backgroundImage: `url(${TrashBin})` }} className='home-trash-bin pt-3'>
                 <button type="button" className="btn btn-outline-secondary mt-4 mb-5" onClick={onAddTrashBinClick}>Add trash bin</button>
@@ -48,7 +54,6 @@ const TrashBinHome = () => {
               </div>
             </div>
           </div>
-
         </>
       </TrashBinCard>
     </>

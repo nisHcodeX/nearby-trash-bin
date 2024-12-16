@@ -11,11 +11,13 @@ const AddTrashBin: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [photo, setPhoto] = useState('');
   const [binUplaodType, setBinUplaodType] = useState(1);
 
   useEffect(() => {
-    console.log('binUplaodType', binUplaodType)
-  }, [binUplaodType])
+    console.log('binUplaodType', binUplaodType);
+    console.log('photo', photo);
+  }, [binUplaodType, photo])
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,26 +27,28 @@ const AddTrashBin: React.FC = () => {
     <TrashBinCard title='Add Trash Bin'>
 
       <form onSubmit={onSubmit}>
-        <CameraComponent />
-        <div className="form-group d-flex flex-column align-items-start mb-2">
-          <select className="form-select mb-2 p-3" aria-label="Default select example"
-            value={binUplaodType}
-            onChange={(e) => setBinUplaodType(parseInt(e.target.value))}
-          >
-            <option value="2">Use Camera</option>
-            <option value="1">Upload Photo</option>
-          </select>
-          <label className='mb-2'>Trash Bin Photo</label>
-          <input
-            type="file"
-            className="form-control p-3 mb-2"
-            // id="exampleInputEmail1" 
-            // aria-describedby="emailHelp" 
-            placeholder="Enter Name"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="form-group d-flex flex-column align-items-start mb-2">
+        <select className="form-select mb-2 p-3" aria-label="Default select example"
+          value={binUplaodType}
+          onChange={(e) => setBinUplaodType(parseInt(e.target.value))}
+        >
+          <option value="1">Use Camera</option>
+          <option value="2">Upload Photo</option>
+        </select>
+        {binUplaodType == 1 ? <CameraComponent /> :
+          <div className="form-group d-flex flex-column align-items-start mb-2">
+            <label className='mb-2'>Trash Bin Photo</label>
+            <input
+              type="file"
+              className="form-control p-3 mb-2"
+              // id="exampleInputEmail1" 
+              // aria-describedby="emailHelp" 
+              placeholder="Add Trash bin photo"
+              onChange={(e) => setPhoto(e.target.value)}
+            />
+          </div>
+        }
+
+        {/* <div className="form-group d-flex flex-column align-items-start mb-2">
           <label className='mb-2'>Longitude</label>
           <input
             type="text"
@@ -54,13 +58,13 @@ const AddTrashBin: React.FC = () => {
             placeholder="Add Longitude"
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="form-group d-flex flex-column align-items-start">
-          <label className='mb-2'>Lattitude</label>
+          <label className='mb-2'>Location</label>
           <input
             type="text"
             className="form-control p-3 mb-2"
-            placeholder="Add Lattitude"
+            placeholder="Search location here"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
