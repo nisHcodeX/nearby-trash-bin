@@ -71,11 +71,22 @@ export interface  LocationData {
     lat: number,
     lng: number
 }
+
 export interface SearchBin {
     radius: number;
     lat: number,
     lng: number
 }
+
+export interface Feedback {
+    comment: string;
+    ratings: number;
+    latestFeedback: number;
+    trashBinId: number;
+    userId: string;
+  }
+  
+
 
 
 

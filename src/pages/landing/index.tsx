@@ -1,20 +1,42 @@
 import { AddTrashBin, FindTrashBin, TrashBin } from '@assets/img';
 import TrashBinCard from '@components/card';
 import './landing.scss'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppSelector } from '@hooks/hooks';
 import { binListGetter, trashTypeGetter } from '@core/coreSlice';
 import { TrashBinRes } from '@core/interface';
-import { TRASH_TYPES } from '@constant/index';
+import { BIN_STATUS, TRASH_TYPES } from '@constant/index';
 import GeocodingAutocomplete from '@components/autocomplete';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import DirectionContainer from '@components/map';
+import { useAddReviewTrashBinMutation } from '@api/trashBin';
+import { useNavigate } from 'react-router-dom';
+import { Rating } from '@mui/material';
+import { getSession } from '@utils/index';
+
 const TrashBinList = () => {
   const binList = useAppSelector(binListGetter);
   const trashgType = useAppSelector(trashTypeGetter);
   const [show, setShow] = useState(false);
+  const [selectedbin, setSelectedbin] = useState<TrashBinRes | null>(null);
   const [completeDispose, setCompleteDispose] = useState(false);
+  const [comment, setComment] = useState('');
+  const [latestStatus, setLatestStaus] = useState<BIN_STATUS>(0);
+  const [rating, setRating] = useState<number>(3);
+  const [showError, setShowError] = useState(false);
+  const [addReview, { isError, isLoading, isSuccess, data }] = useAddReviewTrashBinMutation();
+  const navigate = useNavigate();
+  const session = getSession();
+
+  useEffect(() => {
+    if (isError) setShowError(true);
+    if (isSuccess) {
+      setShow(false);
+      setCompleteDispose(false);
+      navigate('/')
+    };
+  }, [isError, isSuccess])
 
   const binHighlight = (bin: TrashBinRes) => {
     if (bin.glass && trashgType == TRASH_TYPES.GLASS) return 'glass'
@@ -34,8 +56,19 @@ const TrashBinList = () => {
     return trash;
   }
 
-  const findRouteClick = () => {
+  const addReviewAssync = async () => {
+    if (session && selectedbin)
+      await addReview({ comment, latestFeedback: latestStatus, ratings: rating, trashBinId: selectedbin?.id, userId: session?.id });
+    else setShowError(true)
+  }
+
+  const findRouteClick = (bin: TrashBinRes) => {
+    setSelectedbin(bin)
     setShow(true);
+  }
+  const onComleteReview = (e: any) => {
+    e.preventDefault();
+    addReviewAssync();
   }
 
   return (
@@ -58,9 +91,47 @@ const TrashBinList = () => {
         </div> :
           <div className='p-4'>
             <h4 className='text-success mb-2'>Give feedback & Review</h4>
-            <Button variant="success" className='mt-2 w-100' onClick={() => { setShow(false); setCompleteDispose(false) }}>
-              Complete
-            </Button></div>}
+            {showError &&
+              <div className="alert alert-danger close-container" role="alert">
+                Error, Please retry to review ..!
+                <span aria-hidden="true" className='close-icn' onClick={() => setShowError(false)}>&times;</span>
+              </div>
+            }
+            <form onSubmit={onComleteReview}>
+              <div className="form-group d-flex flex-column align-items-start mb-2">
+                <label htmlFor="exampleInputEmail1" className='mb-2'>Review</label>
+                <textarea
+                  // type="text"
+                  className="form-control p-3 mb-2"
+                  placeholder="Add your review"
+                  onChange={(e) => setComment(e.target.value)}
+                />
+              </div>
+              <div className="form-group d-flex flex-column align-items-start mb-2">
+                <label htmlFor="exampleInputEmail1" className='mb-2'>Rating</label>
+                <Rating
+                  name="star-rating"
+                  value={rating}
+                  onChange={(event: any, newValue: any) => {
+                    setRating(newValue);
+                  }}
+                />
+              </div>
+              <div className="form-group d-flex flex-column align-items-start mb-2">
+                <label htmlFor="exampleInputEmail1" className='mb-2'>Bin status</label>
+                <select name="bin-status" className='form-select' onChange={(e) => setLatestStaus(parseInt(e.target.value))}>
+                  <option value={BIN_STATUS.EMPTY}>EMPTY</option>
+                  <option value={BIN_STATUS.QUARTER}>QUARTER</option>
+                  <option value={BIN_STATUS.HALF}>HALF</option>
+                  <option value={BIN_STATUS.THREEQUARTER}>THREEQUARTER</option>
+                  <option value={BIN_STATUS.FULL}>FULL</option>
+                </select>
+              </div>
+              <Button variant="success" type={'submit'} className='mt-2 w-100'>
+                Complete
+              </Button>
+            </form>
+          </div>}
       </Modal>
       {binList && binList.length > 0 ?
         binList.map((bin: TrashBinRes) =>
@@ -72,7 +143,7 @@ const TrashBinList = () => {
                     <img className='home-trash-bin-img-wrapper' src={bin.imageUrl} />
                   </div>
                   <div style={{ backgroundImage: `url(${TrashBin})` }} className='list-trash-bin pt-3'>
-                    <button type="button" className="btn btn-outline-secondary mt-4" onClick={findRouteClick}>Find Route</button>
+                    <button type="button" className="btn btn-outline-secondary mt-4" onClick={() => findRouteClick(bin)}>Find Route</button>
                   </div>
                   <div className='list-trash-bin-text-container d-flex flex-column justify-content-center align-items-center gap-2 mt-6'>
                     <GeocodingAutocomplete initialLat={bin.latitude} initialLng={bin.longitude} disabled />

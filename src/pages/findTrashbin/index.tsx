@@ -22,6 +22,7 @@ const FindTrashBin: React.FC = () => {
   const [searchTrashBin, { isError, isLoading, isSuccess, data }] = useFindTrashBinMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const session = getSession();
 
   useEffect(() => {
     isError && setShowError(true);
@@ -30,7 +31,6 @@ const FindTrashBin: React.FC = () => {
       navigate('/list');
     }
   }, [isError, data])
-  const session = getSession();
 
   const onTrashTypeClick = (trashType: TRASH_TYPES) => {
     dispatch(setTrasType(trashType))

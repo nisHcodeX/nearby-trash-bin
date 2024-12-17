@@ -1,4 +1,4 @@
-import { AddTrashBin, LocationData, SearchBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
+import { AddTrashBin, Feedback, LocationData, SearchBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseCustomQuery } from './interceptorSlice';
 
@@ -49,8 +49,17 @@ export const nearByTrashBinAPI = createApi({
                 }
             }),
         }),
-
+        addReviewTrashBin: builder.mutation<any, Feedback>({
+            query: (data) => ({
+                url: `Feedback/add`,
+                method: "POST",
+                body: data,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+        }),
     }),
 });
 
-export const { useAddTrashBinMutation, useFindTrashBinMutation } = nearByTrashBinAPI;
+export const { useAddTrashBinMutation, useFindTrashBinMutation, useAddReviewTrashBinMutation } = nearByTrashBinAPI;
