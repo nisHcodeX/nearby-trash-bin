@@ -7,14 +7,14 @@ import { logoutUser } from '@utils/index';
 const TrashBinWrapper: React.FC<{ children: ReactElement }> = ({ children }: any) => {
     const navigate = useNavigate()
 
-    const onAboutUsClick =()=>{
+    const onAboutUsClick = () => {
         navigate('/aboutus');
     };
 
-    const onContactUsClick =()=>{
+    const onContactUsClick = () => {
         navigate('/contactus');
     }
-    const onHomeClick =()=>{
+    const onHomeClick = () => {
         navigate('/');
     }
 
@@ -40,7 +40,7 @@ const TrashBinWrapper: React.FC<{ children: ReactElement }> = ({ children }: any
                                     <a className="nav-link" href="/profile">Profile</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link"style={{cursor: 'pointer'}}onClick={logoutUser}>Logout</a>
+                                    <a className="nav-link" style={{ cursor: 'pointer' }} onClick={logoutUser}>Logout</a>
                                 </li>
                                 {/* <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,7 +69,7 @@ const TrashBinWrapper: React.FC<{ children: ReactElement }> = ({ children }: any
                 </div>
                 <div className="footer-link">
                     <a className="about-us" onClick={onAboutUsClick}>About us</a>|
-                    <a className="contact-us"onClick={onContactUsClick}>Contact us</a>
+                    <a className="contact-us" onClick={onContactUsClick}>Contact us</a>
                 </div>
             </div>
         </div>

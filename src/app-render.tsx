@@ -11,8 +11,43 @@ import TrashBinContactUs from '@pages/contactUs';
 import TrashBinAboutUs from '@pages/aboutUs';
 import AddTrashBin from '@pages/addTrashBin';
 import FindTrashBin from '@pages/findTrashbin';
+import AdminDashboardLayout from '@components/layouts/adminDashboardLayout';
+import AdminHome from '@pages/adminHome';
+import Customers from '@pages/customers';
+import TrashBins from '@pages/trashBins';
+import SuggestedBins from '@pages/suggestedBins';
 
 const routes: RouteObject[] = [
+  {
+    path: "/admin",
+    element: <AdminDashboardLayout>
+      <AdminHome />
+    </AdminDashboardLayout>,
+  },
+  {
+    path: "/admin/profile",
+    element: <AdminDashboardLayout>
+      <TrashBinProfile />
+    </AdminDashboardLayout>,
+  },
+  {
+    path: "/trashbins",
+    element: <AdminDashboardLayout>
+      <TrashBins />
+    </AdminDashboardLayout>,
+  },
+  {
+    path: "/suggestedbins",
+    element: <AdminDashboardLayout>
+      <SuggestedBins />
+    </AdminDashboardLayout>,
+  },
+  {
+    path: "/customers",
+    element: <AdminDashboardLayout>
+      <Customers />
+    </AdminDashboardLayout>,
+  },
   {
     path: "/login",
     element: <TrashBinWrapper><TrashBinLogin /></TrashBinWrapper>,
