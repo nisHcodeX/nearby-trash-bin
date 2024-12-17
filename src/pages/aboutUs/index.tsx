@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import './index.scss';
 import { DirectionsRenderer, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { deprecations } from 'sass';
+import { TrashBinLogo } from '@assets/img';
 
 const containerStyle = {
   width: "100%",
@@ -11,95 +12,25 @@ const containerStyle = {
 
 
 const TrashBinAboutUs: React.FC = () => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
-  const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null)
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      setCenter({ lat: 6.053519, lng: 80.220978 });
-    });
-  }, []);
-
-  const onLoad = useCallback((map: google.maps.Map) => {
-    if (center) {
-      const bounds = new google.maps.LatLngBounds(center);
-      map.fitBounds(bounds);
-    }
-    setMap(map);
-    map.setZoom(10)
-  }, [center]);
-
-  const onUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
-
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY?? "", 
-  });
-
-  async function calculateRoute() {
-
-    const directioValue = { lat: 6.142658661791, lng: 80.54002282138 }
-    if (!center && !directioValue) {
-      return
-    }
-    if (center) {
-      const directionsService = new google.maps.DirectionsService()
-      const results = await directionsService.route({
-        origin: center,
-        destination: directioValue,
-        // eslint-disable-next-line no-undef
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      setDirectionsResponse(results)
-    }
-  }
-
-// 'AIzaSyB9mlNrPmt27rl_SK5d2jgVDw3rszWfBfI'
   return (
-    <TrashBinCard title='Map View'>
+    <TrashBinCard title='About Us'>
       <div className='login-container'>
-        <div className="map-input-container d-flex gap-2 mb-4">
-          <div className="d-flex gap-2">
-            <button type="button" className="btn btn-success" onClick={() => calculateRoute()}>Calculate Route</button>
-            <button type="button" className="btn btn-success" onClick={() => map?.panTo(center!)}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
-                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
-              </svg>
-            </button>
-            <button type="button" className="btn btn-success" onClick={() => setDirectionsResponse(null)} style={{marginLeft: 'auto'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-              </svg>
-            </button>
-          </div>
+        <div className='login-image-container mb-4'>
+          <img src={TrashBinLogo} className='login-img-logo' />
         </div>
-        <div className="map-wrapper">
-          {isLoaded && center && (
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={10}
-              onLoad={onLoad}
-              onUnmount={onUnmount}
-              options={{
-                // zoomControl: false,
-                streetViewControl: false,
-                mapTypeControl: false,
-                fullscreenControl: false,
-              }}
-            >
-              <Marker position={center} />
-              {directionsResponse && (
-                <DirectionsRenderer directions={directionsResponse} />
-              )}
-            </GoogleMap>
-          )}
-        </div>
+        <p className='text-justify' style={{ textAlign: 'justify' }}>
+          Our mission is to foster a cleaner, healthier environment by providing an innovative platform for responsible waste management.
+          The "Nearby Trash Bin System" is designed to help users easily locate nearby trash bins suited for their specific waste types.
+          By leveraging cutting-edge AI technologies like YOLOv5 for trash bin detection and integrating Google Maps for accurate navigation,
+          we empower individuals and communities to adopt sustainable waste disposal practices. This system not only promotes environmental cleanliness but also contributes to the well-being of wildlife and supports urban sustainability.
+        </p>
+        <p style={{ textAlign: 'justify' }}>
+          We are committed to bridging the gap between traditional waste management systems and modern technological advancements,
+          ensuring accessibility for both urban and rural areas. Our user-friendly platform encourages community involvement,
+          enabling users to add new bins, provide feedback, and access real-time directions to the nearest trash disposal facilities.
+          Together, we aim to create a greener, more sustainable future for everyone.
+        </p>
       </div>
     </TrashBinCard>
   );
