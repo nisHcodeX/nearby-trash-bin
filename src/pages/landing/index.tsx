@@ -111,7 +111,7 @@ const TrashBinList = () => {
       >
 
         {!completeDispose ? <div>
-          <DirectionContainer />
+          <DirectionContainer lat={selectedbin?.latitude} lng={selectedbin?.longitude}/>
           <div className='px-4 pb-4'>
             <Button variant="success" className='mt-2 w-100' onClick={() => setCompleteDispose(true)}>
               Complete Trash Dispose

@@ -10,7 +10,7 @@ const containerStyle = {
 };
 
 
-const DirectionContainer: React.FC = () => {
+const DirectionContainer: React.FC<{ lat?: number, lng?: number }> = ({ lat, lng }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
   const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null)
@@ -42,7 +42,7 @@ const DirectionContainer: React.FC = () => {
 
   async function calculateRoute() {
 
-    const directioValue = { lat: 6.142658661791, lng: 80.54002282138 }
+    const directioValue = { lat: lat ?? 6.142658661791, lng: lng ?? 80.54002282138 }
     if (!center && !directioValue) {
       return
     }
