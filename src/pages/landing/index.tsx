@@ -70,6 +70,35 @@ const TrashBinList = () => {
     e.preventDefault();
     addReviewAssync();
   }
+  const binStatusRender = (status : BIN_STATUS) => {
+    let statusText = "";
+    console.log('status', status)
+    switch(status){
+      case BIN_STATUS.EMPTY :
+      statusText = 'EMPTY'
+      break;
+      case BIN_STATUS.HALF :
+      statusText = 'HALF'
+      break;
+      case BIN_STATUS.QUARTER :
+      statusText = 'QUARTER'
+      break;
+      case BIN_STATUS.FULL :
+      statusText = 'FULL'
+      break;
+      case BIN_STATUS.THREEQUARTER :
+      statusText = 'THREEQUARTER'
+      break;
+      default: statusText = 'EMPTY'
+    }
+
+    return (<input
+      type="text"
+      className="form-control p-2 mb-2"
+      placeholder={statusText}
+      disabled
+    />);
+  }
 
   return (
     <>
@@ -147,11 +176,21 @@ const TrashBinList = () => {
                   </div>
                   <div className='list-trash-bin-text-container d-flex flex-column justify-content-center align-items-center gap-2 mt-6'>
                     <GeocodingAutocomplete initialLat={bin.latitude} initialLng={bin.longitude} disabled />
-                    <p >
-                      Trash Type Available to dispose
-                      <br />
-                      {trashTypeRender(bin)}
-                    </p>
+                    {binStatusRender(bin?.feedbacks[0]?.latestFeedback)}
+                    <div>
+                      <p >
+                        Trash Type Available to dispose
+                        <br />
+                        {trashTypeRender(bin)}
+                      </p>
+                      {bin.feedbacks[0] ?
+                        <Rating
+                          name="read-only"
+                          readOnly
+                          value={bin.feedbacks[0].ratings}
+                        /> : <Rating name="no-value" value={null} disabled />
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
