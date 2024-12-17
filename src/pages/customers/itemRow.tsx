@@ -1,10 +1,13 @@
 import { IcApprove, IcReject } from '@assets/icons';
+import { UserDetail } from '@core/interface';
 
-const ItemRow = () => {
+const ItemRow = ({user} : {user: UserDetail}) => {
   return (
     <tr>
-      <th scope="row">1</th>
-      <td>John Doe</td>
+      <td scope="row">{user.id}</td>
+      <td scope="row">{user.userName}</td>
+      <td scope="row">{user.email}</td>
+      <td scope="row">{user.phoneNumber}</td>
     </tr>
   );
 };

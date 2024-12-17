@@ -1,4 +1,4 @@
-import { USER_TYPES } from "@constant/index";
+import { BIN_APPROVE_STATUS, USER_TYPES } from "@constant/index";
 
 export interface Session {
     "id": string;
@@ -66,7 +66,7 @@ export interface FindTrashBin {
     "userType": USER_TYPES
 }
 
-export interface  LocationData {
+export interface LocationData {
     address: string;
     lat: number,
     lng: number
@@ -84,9 +84,31 @@ export interface Feedback {
     latestFeedback: number;
     trashBinId: number;
     userId: string;
+}
+
+export interface UserDetail {
+    createdAt: string; 
+    userType: number; 
+    id: string; 
+    userName: string;
+    normalizedUserName: string;
+    email: string;
+    normalizedEmail: string;
+    emailConfirmed: boolean;
+    passwordHash: string;
+    securityStamp: string;
+    concurrencyStamp: string;
+    phoneNumber: string | null;
+    phoneNumberConfirmed: boolean;
+    twoFactorEnabled: boolean;
+    lockoutEnd: string | null;
+    lockoutEnabled: boolean;
+    accessFailedCount: number;
   }
-  
 
-
+export interface UpdateTrashBin {
+    id: number;
+    status: BIN_APPROVE_STATUS
+}
 
 

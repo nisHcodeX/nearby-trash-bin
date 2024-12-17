@@ -56,7 +56,7 @@ const AdminDashboardLayout: React.FC<{ children: ReactElement }> = ({ children }
                 </li>
                 <li className="nav-item">
                   <a className="nav-link active" aria-current="page" href="/customers">
-                    Customer List
+                    Users List
                   </a>
                 </li>
                 <li className="nav-item">

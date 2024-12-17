@@ -1,22 +1,40 @@
+import { useUserListMutation } from '@api/admin';
 import ItemRow from './itemRow';
+import { useEffect } from 'react';
+import Loader from '@components/loader';
+import { UserDetail } from '@core/interface';
+import { USER_TYPES } from '@constant/index';
+import TrashBinCard from '@components/card';
 
 const Customers = () => {
+  const [getUsers, { isError, isLoading, isSuccess, data }] = useUserListMutation();
+
+  useEffect(() => {
+    getUsers()
+  }, []);
+
+  if (isLoading) return <div className='mt-6'><Loader lg /></div>
+
   return (
-    <div className="table-responsive">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Customer Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((item) => (
-            <ItemRow />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <TrashBinCard title='Customer List'>
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Contact Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((user: UserDetail) => (
+              user.userType == USER_TYPES.USER && <ItemRow key={user.id} user={user} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </TrashBinCard>
   );
 };
 

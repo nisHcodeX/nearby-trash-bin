@@ -6,6 +6,7 @@ import { useUserLoginMutation } from '@api/auth';
 import Loader from '@components/loader';
 import { setSession } from '@utils/index';
 import { useNavigate } from 'react-router-dom';
+import { USER_TYPES } from '@constant/index';
 
 const TrashBinLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,9 @@ const TrashBinLogin: React.FC = () => {
       .then(res => {
         setPending(false);
         setSession(res);
-        navigate('/');
+        if (res.userType == USER_TYPES.ADMIN)
+          navigate('/admin');
+        else navigate('/');
       })
       .catch(err => {
         setPending(false);
@@ -42,10 +45,10 @@ const TrashBinLogin: React.FC = () => {
         <div className='login-image-container mb-4'>
           <img src={TrashBinLogo} className='login-img-logo' />
         </div>
-        { showError && 
+        {showError &&
           <div className="alert alert-danger close-container" role="alert">
             Error, check your credentials ..!
-            <span aria-hidden="true" className='close-icn'onClick={()=>setShowError(false)}>&times;</span>
+            <span aria-hidden="true" className='close-icn' onClick={() => setShowError(false)}>&times;</span>
           </div>
         }
         <form onSubmit={onSubmit}>

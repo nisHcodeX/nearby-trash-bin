@@ -17,3 +17,8 @@ export enum BIN_STATUS{
     THREEQUARTER = 3,
     FULL = 4
 };
+export enum BIN_APPROVE_STATUS{
+    PENDING = 0,
+    APPROVED = 1,
+    REJECTED = 2
+};

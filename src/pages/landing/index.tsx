@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useAppSelector } from '@hooks/hooks';
 import { binListGetter, trashTypeGetter } from '@core/coreSlice';
 import { TrashBinRes } from '@core/interface';
-import { BIN_STATUS, TRASH_TYPES } from '@constant/index';
+import { BIN_APPROVE_STATUS, BIN_STATUS, TRASH_TYPES } from '@constant/index';
 import GeocodingAutocomplete from '@components/autocomplete';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -164,12 +164,13 @@ const TrashBinList = () => {
       </Modal>
       {binList && binList.length > 0 ?
         binList.map((bin: TrashBinRes) =>
+          bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED &&
           <TrashBinCard key={bin.id}>
             <>
               <div className={`d-flex flex-column justify-content-center align-items-center gap-5`}>
                 <div className={`home-trash-bin-wrapper p-4 ${binHighlight(bin)}`}>
                   <div className='home-trash-bin-img-wrapper'>
-                    <img className='home-trash-bin-img-wrapper' src={bin.imageUrl} />
+                    <img className='home-trash-bin-img-wrapper list-bin-image' src={bin.imageUrl} />
                   </div>
                   <div style={{ backgroundImage: `url(${TrashBin})` }} className='list-trash-bin pt-3'>
                     <button type="button" className="btn btn-outline-secondary mt-4" onClick={() => findRouteClick(bin)}>Find Route</button>

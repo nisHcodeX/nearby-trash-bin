@@ -1,4 +1,4 @@
-import { AddTrashBin, Feedback, LocationData, SearchBin, TrashBinRes, UserLoggedData, UserLoginData, UserSigupData } from '@core/interface'
+import { AddTrashBin, Feedback, SearchBin, TrashBinRes } from '@core/interface'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseCustomQuery } from './interceptorSlice';
 
@@ -8,7 +8,6 @@ const base64ToBlob = (base64: string, contentType = 'image/png') => {
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: contentType });
 };
-
 
 // Define a service using a base URL and expected endpoints
 export const nearByTrashBinAPI = createApi({
