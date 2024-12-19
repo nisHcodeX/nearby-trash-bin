@@ -16,7 +16,7 @@ const Feedbacks = () => {
   if (isLoading) return <div className='mt-6'><Loader lg /></div>
 
   return (
-    <TrashBinCard title='Customer List'>
+    <TrashBinCard title='Feedback List'>
       <div className="table-responsive">
         <table className="table">
           <thead>
