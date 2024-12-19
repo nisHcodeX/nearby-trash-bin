@@ -72,7 +72,6 @@ const TrashBinList = () => {
   }
   const binStatusRender = (status : BIN_STATUS) => {
     let statusText = "";
-    console.log('status', status)
     switch(status){
       case BIN_STATUS.EMPTY :
       statusText = 'EMPTY'
