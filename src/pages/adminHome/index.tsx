@@ -6,12 +6,12 @@ import Checkbox from '@mui/material/Checkbox';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { chartData, valueFormatter } from './webUsageStats';
 import TrashBinCard from '@components/card';
-import { LineChart } from '@mui/x-charts';
+import { BarChart, LineChart } from '@mui/x-charts';
 import { Button } from '@mui/material';
 import { useFeedbackListMutation, useTrashBinListMutation, useUserListMutation } from '@api/admin';
 import { useEffect, useState } from 'react';
 import Loader from '@components/loader';
-import { BIN_APPROVE_STATUS } from '@constant/index';
+import { BIN_APPROVE_STATUS, BIN_STATUS } from '@constant/index';
 
 
 const AdminHome = () => {
@@ -19,6 +19,8 @@ const AdminHome = () => {
     const [itemNb, setItemNb] = useState(5);
     const [skipAnimation, setSkipAnimation] = useState(true);
     const [showError, setShowError] = useState(true);
+    const [pData, setPData] = useState<number[]>([]);
+    const [xLabels, setXLabels] = useState<number[]>([]);
     const [data, setData] = useState({ feedbacks: 3, users: 6, aBins: 5, pBins: 4, sBins: 2, total: 0 });
     const [getFeedbacks, { isError: isFeedbackError, isLoading: isFeedbackLoading, data: feedbacks }] = useFeedbackListMutation();
     const [getUsers, { isError: isUsersError, isLoading: isUsersLoading, data: users }] = useUserListMutation();
@@ -35,7 +37,7 @@ const AdminHome = () => {
             setData(prev => ({ ...prev, feedbacks: feedbacks.length, total: prev.total + feedbacks.length }));
         }
         if (users?.length) {
-            setData(prev => ({ ...prev, users: users.length, total: prev.total + users.length  }));
+            setData(prev => ({ ...prev, users: users.length, total: prev.total + users.length }));
         }
         if (trashbins?.length) {
             const pending = trashbins.filter((bin) => bin.trashBinStatus == BIN_APPROVE_STATUS.PENDING)
@@ -45,6 +47,40 @@ const AdminHome = () => {
         }
 
     }, [feedbacks, users, trashbins]);
+
+    useEffect(() => {
+        if (trashbins?.length) {
+            const approved = trashbins.filter((bin) => bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED)
+            approved.map(bin => (
+                setXLabels(prev =>[...prev, bin.id]),
+                setPData(prev =>[...prev, binStatusRender(bin.feedbacks[0]?.latestFeedback ?? BIN_STATUS.EMPTY)])
+            ))
+        }
+
+    }, [trashbins]);
+
+    const binStatusRender = (status: BIN_STATUS) : number => {
+        let statusText = 0;
+        switch (status) {
+          case BIN_STATUS.EMPTY:
+            statusText = 0
+            break;
+          case BIN_STATUS.HALF:
+            statusText = 50
+            break;
+          case BIN_STATUS.QUARTER:
+            statusText = 25
+            break;
+          case BIN_STATUS.FULL:
+            statusText = 100
+            break;
+          case BIN_STATUS.THREEQUARTER:
+            statusText = 75
+            break;
+          default: statusText = 0
+        }
+        return statusText;
+      };
 
     useEffect(() => {
         if (isFeedbackError || isUsersError || isTrashBinsError) {
@@ -95,22 +131,13 @@ const AdminHome = () => {
 
                     <div>
                         <h4 className='mt-3 text-success mb-5'> Trashbins status</h4>
-                        <LineChart
-                            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]} // x-axis data
-                            series={[
-                                {
-                                    data: [2.5, 10, 2, 8.5, 1.5, 5], // series data
-                                },
-                            ]}
+                        <BarChart
                             width={500}
                             height={300}
-                            tooltip={{
-                                trigger: 'item', // Tooltip triggers on item
-                                slots: {
-                                    itemContent: CustomTooltipContent, // Use CustomTooltipContent for item tooltip
-
-                                },
-                            }}
+                            series={[
+                                { data: pData, label: 'bin status', id: 'pvId' },
+                            ]}
+                            xAxis={[{ data: xLabels, scaleType: 'band' }]}
                         />
                     </div>
                     <div>
