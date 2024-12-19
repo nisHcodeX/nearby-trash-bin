@@ -16,6 +16,7 @@ import AdminHome from '@pages/adminHome';
 import Customers from '@pages/customers';
 import TrashBins from '@pages/trashBins';
 import SuggestedBins from '@pages/suggestedBins';
+import Feedbacks from '@pages/feedbacks';
 
 const routes: RouteObject[] = [
   {
@@ -46,6 +47,12 @@ const routes: RouteObject[] = [
     path: "/customers",
     element: <AdminDashboardLayout>
       <Customers />
+    </AdminDashboardLayout>,
+  },
+  {
+    path: "/feedbacks",
+    element: <AdminDashboardLayout>
+      <Feedbacks />
     </AdminDashboardLayout>,
   },
   {

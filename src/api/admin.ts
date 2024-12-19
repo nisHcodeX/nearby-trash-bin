@@ -1,4 +1,4 @@
-import { TrashBinRes, UpdateTrashBin, UserDetail } from '@core/interface'
+import { FeedbackRes, TrashBinRes, UpdateTrashBin, UserDetail } from '@core/interface'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseCustomQuery } from './interceptorSlice';
 
@@ -25,6 +25,15 @@ export const nearByTrashBinAdminAPI = createApi({
                 }
             }),
         }),
+        feedbackList: builder.mutation<FeedbackRes[], void>({
+            query: () => ({
+                url: `Admin/feedbacks`,
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+        }),
         updatetrashBin: builder.mutation<any, UpdateTrashBin>({
             query: (data) => ({
                 url: `Admin/update/bin?id=${data.id}&status=${data.status}`,
@@ -37,4 +46,4 @@ export const nearByTrashBinAdminAPI = createApi({
     }),
 });
 
-export const { useUserListMutation, useTrashBinListMutation, useUpdatetrashBinMutation } = nearByTrashBinAdminAPI;
+export const { useUserListMutation, useTrashBinListMutation, useUpdatetrashBinMutation, useFeedbackListMutation } = nearByTrashBinAdminAPI;

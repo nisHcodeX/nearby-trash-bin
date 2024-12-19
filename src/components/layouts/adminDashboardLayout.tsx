@@ -70,7 +70,12 @@ const AdminDashboardLayout: React.FC<{ children: ReactElement }> = ({ children }
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="admin/profile">
+                  <a className="nav-link active" aria-current="page" href="/feedbacks">
+                    Feedbacks
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="/admin/profile">
                     Profile
                   </a>
                 </li>

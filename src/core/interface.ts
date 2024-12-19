@@ -87,9 +87,9 @@ export interface Feedback {
 }
 
 export interface UserDetail {
-    createdAt: string; 
-    userType: number; 
-    id: string; 
+    createdAt: string;
+    userType: number;
+    id: string;
     userName: string;
     normalizedUserName: string;
     email: string;
@@ -104,11 +104,23 @@ export interface UserDetail {
     lockoutEnd: string | null;
     lockoutEnabled: boolean;
     accessFailedCount: number;
-  }
+}
 
 export interface UpdateTrashBin {
     id: number;
     status: BIN_APPROVE_STATUS
+}
+
+export interface FeedbackRes {
+    id: number;
+    comment: string;
+    ratings: number;
+    createdDate: string;
+    updatedDate: string | null;
+    userId: string;
+    trashBinId: number;
+    trashBin: any | null;
+    latestFeedback: number;
 }
 
 

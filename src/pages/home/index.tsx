@@ -1,13 +1,19 @@
 import { AddTrashBin, FindTrashBin, TrashBin } from '@assets/img';
 import TrashBinCard from '@components/card';
 import './home.scss'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getSession } from '@utils/index';
+import { USER_TYPES } from '@constant/index';
 
 const TrashBinHome = () => {
   const navigate = useNavigate();
   const session = getSession();
+
+  useEffect(() => {
+    if(session && session.userType == USER_TYPES.ADMIN)
+      navigate('/admin')
+  }, [session])
 
   const onFindTrashBinClick = () => {
     session ?

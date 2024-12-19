@@ -1,7 +1,8 @@
 import GeocodingAutocomplete from '@components/autocomplete';
 import { BIN_APPROVE_STATUS } from '@constant/index';
 import { TrashBinRes } from '@core/interface';
-import { IcApprove, IcReject } from 'assets/icons';
+import { Button } from '@mui/material';
+import { HighlightOff, CheckCircleOutlineOutlined } from '@mui/icons-material';
 
 const ItemRow = ({ bin, onRejectClick, onApproveClick }: { bin: TrashBinRes, onRejectClick: () => void, onApproveClick: () => void }) => {
 
@@ -31,13 +32,15 @@ const ItemRow = ({ bin, onRejectClick, onApproveClick }: { bin: TrashBinRes, onR
       <td>{trashBinStatusRender(bin.trashBinStatus)}</td>
       <td>{trashTypeRender(bin)}</td>
       <td><img src={bin.imageUrl} height={100} /></td>
-      <td className="d-flex justify-content-end" style={{ height: '117px' }}>
-        <button type="button" className="btn me-1" style={{ padding: '6px', height: '50px', }} onClick={onApproveClick}>
-          <IcApprove />
-        </button>
-        <button type="button" className="btn me-1" style={{ padding: '6px', height: '50px', }} onClick={onRejectClick}>
-          <IcReject />
-        </button>
+      <td className="d-flex justify-content-end gap-2" style={{ height: '117px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: 'auto' }}>
+          <Button variant="outlined" startIcon={<CheckCircleOutlineOutlined />} onClick={onApproveClick}>
+            Approve
+          </Button>
+          <Button variant="outlined" startIcon={<HighlightOff />} onClick={onRejectClick}>
+            Reject
+          </Button>
+        </div>
       </td>
     </tr>
   );
