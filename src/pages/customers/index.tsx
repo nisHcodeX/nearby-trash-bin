@@ -13,7 +13,7 @@ const Customers = () => {
     getUsers()
   }, []);
 
-  if (isLoading) return <div className='mt-6'><Loader lg /></div>
+  if (isLoading) return <Loader lg />
 
   return (
     <TrashBinCard title='Customer List'>

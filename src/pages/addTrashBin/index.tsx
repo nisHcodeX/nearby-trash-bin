@@ -54,7 +54,8 @@ const AddTrashBin: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
-  }
+  };
+
   return (
     <TrashBinCard title='Add Trash Bin'>
 
@@ -100,7 +101,7 @@ const AddTrashBin: React.FC = () => {
           <label className='mb-2'>Location</label>
           <GeocodingAutocomplete
             results={(data) => setLocationData(data)}
-            // initialLat={6.053519} initialLng={80.220978}
+          // initialLat={6.053519} initialLng={80.220978}
           />
         </div>
         <div className="form-group d-flex mt-3 mb-4 ">
@@ -123,10 +124,10 @@ const AddTrashBin: React.FC = () => {
         </div>
         <div>
           <button
-              type="submit"
-              className="btn btn-primary w-100 p-2 mt-3 mb-3 login-btn d-flex align-items-center justify-content-center"
-              disabled={isLoading ? true : false}
-            > {isLoading && <Loader white />} Add trash bin</button>
+            type="submit"
+            className="btn btn-primary w-100 p-2 mt-3 mb-3 login-btn d-flex align-items-center justify-content-center"
+            disabled={isLoading ? true : false}
+          > {isLoading && <Loader white />} Add trash bin</button>
         </div>
       </form>
     </TrashBinCard>
