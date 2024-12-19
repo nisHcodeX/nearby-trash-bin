@@ -69,6 +69,10 @@ const AddTrashBin: React.FC = () => {
     }
   };
 
+  const onContinueClick = () => {
+    setShow(false);
+  };
+
   return (
     <TrashBinCard title='Add Trash Bin'>
       <>
@@ -80,7 +84,7 @@ const AddTrashBin: React.FC = () => {
           aria-labelledby="example-custom-modal-styling-title"
         >
           {isImageLoding && <Loader />}
-          {data && photo ? <ImageWithBorder photo={photo} data={data} />
+          {data && photo ? <ImageWithBorder photo={photo} data={data} onContinueClick={onContinueClick}/>
             : <>{!isImageLoding && <div className='p-4'><h2>Try Again..!</h2></div>}</>
           }
         </Modal>

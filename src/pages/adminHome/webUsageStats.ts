@@ -13,7 +13,7 @@ export const chartData = (data : {feedbacks: number, users: number, aBins: numbe
     },
     {
       label: 'Suggested Trashbins',
-      value: 3.83,
+      value: normalize(data.sBins, data.total),
     },
     {
       label: 'Pending Trashbins',

@@ -1,14 +1,18 @@
 import { InferenceResult } from "@core/interface";
-import React, { FC, useEffect, useRef } from "react";
-import { Button } from '@mui/material';
+import React, { FC, useEffect, useRef, useState } from "react";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     data: InferenceResult;
     photo: string;
+    onContinueClick: () => void;
 }
 
-const ImageWithBorder: FC<Props> = ({ data, photo }) => {
+const ImageWithBorder: FC<Props> = ({ data, photo, onContinueClick }) => {
+    const navigate = useNavigate();
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (data && canvasRef.current) {
@@ -17,32 +21,42 @@ const ImageWithBorder: FC<Props> = ({ data, photo }) => {
 
             if (ctx) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
                 const scale = Math.min(400 / data.image.width, 400 / data.image.height);
+                let hasValidPrediction = false;
 
                 data.predictions.forEach((prediction) => {
-                    const scaledX = (prediction.x - prediction.width / 2) * scale;
-                    const scaledY = (prediction.y - prediction.height / 2) * scale;
-                    const scaledWidth = prediction.width * scale;
-                    const scaledHeight = prediction.height * scale;
+                    if (prediction.confidence > 0.9) {
+                        hasValidPrediction = true;
 
-                    ctx.strokeStyle = "green";
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
-                    ctx.fillStyle = "blue"; 
-                    const text = `Trashbin (${(prediction.confidence * 100).toFixed(1)}%)`;
-                    
-                    const textWidth = ctx.measureText(text).width;
-                    const textHeight = 14; 
-                    
-                    ctx.fillRect(scaledX + 5, scaledY + 15 - textHeight, textWidth + 10, textHeight + 5);
-                    
-                    ctx.fillStyle = "white";
-                    ctx.font = "14px Arial";
-                    
-                    // Draw text on top of the background
-                    ctx.fillText(text, scaledX + 5, scaledY + 15);
-                    
+                        const scaledX = (prediction.x - prediction.width / 2) * scale;
+                        const scaledY = (prediction.y - prediction.height / 2) * scale;
+                        const scaledWidth = prediction.width * scale;
+                        const scaledHeight = prediction.height * scale;
+
+                        ctx.strokeStyle = "green";
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
+
+                        ctx.fillStyle = "blue";
+                        const text = `Trashbin (${(prediction.confidence * 100).toFixed(1)}%)`;
+
+                        const textWidth = ctx.measureText(text).width;
+                        const textHeight = 14;
+
+                        ctx.fillRect(scaledX + 5, scaledY + 15 - textHeight, textWidth + 10, textHeight + 5);
+
+                        ctx.fillStyle = "white";
+                        ctx.font = "14px Arial";
+                        ctx.fillText(text, scaledX + 5, scaledY + 15);
+                    }
                 });
+
+                if (!hasValidPrediction) {
+                    setError("No predictions with confidence greater than 90% were found.");
+                } else {
+                    setError(null);
+                }
             }
         }
     }, [data]);
@@ -50,11 +64,12 @@ const ImageWithBorder: FC<Props> = ({ data, photo }) => {
     if (!data) {
         return null;
     }
+
     const scale = Math.min(400 / data.image.width, 400 / data.image.height);
 
     return (
         <>
-            <div style={{ position: "relative", width: 400, height: 'auto' }} className="m-2">
+            <div style={{ position: "relative", width: 400, height: "auto" }} className="m-2">
                 <img
                     src={photo}
                     alt="Captured"
@@ -76,12 +91,21 @@ const ImageWithBorder: FC<Props> = ({ data, photo }) => {
                 />
             </div>
             <div className="p-4">
-                <h4 className="text-success mb-2 d-flex">
-                    System Has Detected{" "}
-                    <div className="text-primary">&nbsp; {data.predictions.length} &nbsp; </div> bins
-                </h4>
-                <div className="d-flex justify-content-center mt-4">
-                    <Button variant="outlined">Continue</Button>
+                {error ? (
+                    <p className="text-danger mb-2 ">{error}</p>
+                ) : (
+                    <h4 className="text-success mb-2 d-flex">
+                        System Has Detected{" "}
+                        <div className="text-primary">&nbsp; {data.predictions.length} &nbsp; </div> bins
+                    </h4>
+                )}
+                <div className="d-flex justify-content-center mt-4 gap-2">
+                    <Button variant="outlined" onClick={onContinueClick} disabled={!!error}>
+                        Continue
+                    </Button>
+                    {!!error && <Button variant="outlined" onClick={()=> navigate('/')} >
+                        Cancel
+                    </Button>}
                 </div>
             </div>
         </>

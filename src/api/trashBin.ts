@@ -15,7 +15,6 @@ export const nearByTrashBinAPI = createApi({
     endpoints: (builder) => ({
         addTrashBin: builder.mutation<TrashBinRes, AddTrashBin>({
             query: (data) => {
-                console.log('data', data)
                 const formData = new FormData();
                 if (data.Image.startsWith("data:image")) {
                     const contentType = data.Image.substring(data.Image.indexOf(":") + 1, data.Image.indexOf(";"));

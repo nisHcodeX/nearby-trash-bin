@@ -41,7 +41,7 @@ const TrashBins = () => {
           </thead>
           <tbody>
             {data?.map((bin: TrashBinRes) => (
-              <ItemRow key={bin.id} bin={bin} onApproveClick={() => onApproveClick(bin)} onRejectClick={() => onRejectClick(bin)} />
+              !bin.suggestedBin && <ItemRow key={bin.id} bin={bin} onApproveClick={() => onApproveClick(bin)} onRejectClick={() => onRejectClick(bin)} />
             ))}
           </tbody>
         </table>

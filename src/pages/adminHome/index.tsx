@@ -1,8 +1,3 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { chartData, valueFormatter } from './webUsageStats';
 import TrashBinCard from '@components/card';
@@ -12,6 +7,9 @@ import { useFeedbackListMutation, useTrashBinListMutation, useUserListMutation }
 import { useEffect, useState } from 'react';
 import Loader from '@components/loader';
 import { BIN_APPROVE_STATUS, BIN_STATUS } from '@constant/index';
+import { exportToExcel } from './excellExporter';
+import { FeedbackRes, UserDetail } from '@core/interface';
+import { onExportFeedbacks, onExportSugestedTrashBins, onExportTrashBins, onExportUsers } from './exportFunction';
 
 
 const AdminHome = () => {
@@ -40,79 +38,64 @@ const AdminHome = () => {
             setData(prev => ({ ...prev, users: users.length, total: prev.total + users.length }));
         }
         if (trashbins?.length) {
-            const pending = trashbins.filter((bin) => bin.trashBinStatus == BIN_APPROVE_STATUS.PENDING)
+            const pending = trashbins.filter((bin) => (bin.trashBinStatus == BIN_APPROVE_STATUS.PENDING && !bin.suggestedBin))
             setData(prev => ({ ...prev, pBins: pending.length, total: prev.total + pending.length }));
-            const approved = trashbins.filter((bin) => bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED)
+            const approved = trashbins.filter((bin) => (bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED && !bin.suggestedBin))
             setData(prev => ({ ...prev, aBinsBins: approved.length, total: prev.total + approved.length }));
+            const suggested = trashbins.filter((bin) => bin.suggestedBin)
+            setData(prev => ({ ...prev, sBins: suggested.length, total: prev.total + suggested.length }));
         }
 
     }, [feedbacks, users, trashbins]);
 
     useEffect(() => {
         if (trashbins?.length) {
-            const approved = trashbins.filter((bin) => bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED)
-            approved.map(bin => (
-                setXLabels(prev =>[...prev, bin.id]),
-                setPData(prev =>[...prev, binStatusRender(bin.feedbacks[0]?.latestFeedback ?? BIN_STATUS.EMPTY)])
-            ))
+            const approved = trashbins.filter(
+                (bin) => bin.trashBinStatus === BIN_APPROVE_STATUS.APPROVED
+            );
+
+            approved.forEach((bin) => {
+                if (!bin.suggestedBin) {
+                    setXLabels((prev) => [...prev, bin.id]);
+                    setPData((prev) => [
+                        ...prev,
+                        binStatusRender(bin.feedbacks[0]?.latestFeedback ?? BIN_STATUS.EMPTY),
+                    ]);
+                }
+            });
         }
+
 
     }, [trashbins]);
 
-    const binStatusRender = (status: BIN_STATUS) : number => {
+    const binStatusRender = (status: BIN_STATUS): number => {
         let statusText = 0;
         switch (status) {
-          case BIN_STATUS.EMPTY:
-            statusText = 0
-            break;
-          case BIN_STATUS.HALF:
-            statusText = 50
-            break;
-          case BIN_STATUS.QUARTER:
-            statusText = 25
-            break;
-          case BIN_STATUS.FULL:
-            statusText = 100
-            break;
-          case BIN_STATUS.THREEQUARTER:
-            statusText = 75
-            break;
-          default: statusText = 0
+            case BIN_STATUS.EMPTY:
+                statusText = 0
+                break;
+            case BIN_STATUS.HALF:
+                statusText = 50
+                break;
+            case BIN_STATUS.QUARTER:
+                statusText = 25
+                break;
+            case BIN_STATUS.FULL:
+                statusText = 100
+                break;
+            case BIN_STATUS.THREEQUARTER:
+                statusText = 75
+                break;
+            default: statusText = 0
         }
         return statusText;
-      };
+    };
 
     useEffect(() => {
         if (isFeedbackError || isUsersError || isTrashBinsError) {
             setShowError(true)
         } else setShowError(false)
     }, [isFeedbackError, isUsersError, isTrashBinsError]);
-
-    function CustomTooltipContent(props: { series: any; itemData: any }) {
-        console.log('props', props)
-        const { series, itemData } = props;
-
-        const index = itemData?.index; // Get the index of the hovered data point
-        const value = series?.data[index]; // Get the value from the series based on the index
-
-        return (
-            <div {...props}
-                style={{
-                    padding: '8px',
-                    backgroundColor: '#fff',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontSize: '14px',
-                }}
-            >
-                <strong>Custom Tooltip</strong>
-                <br />
-                <strong>Index:</strong> {index}
-                <br />
-                <strong>Value:</strong> {value}
-            </div>
-        );
-    }
 
     if (isFeedbackLoading || isUsersLoading || isTrashBinsLoading) return <Loader lg />;
 
@@ -158,9 +141,11 @@ const AdminHome = () => {
                         />
                     </div>
                     <div className='d-flex flex-column gap-4'>
-                        <Button variant="outlined">Export TrashBin List</Button>
-                        <Button variant="outlined">Export User List</Button>
-                        <Button variant="outlined">Export Feddbacks List</Button>
+                        <h4 className='mt-3 text-success mb-2'> Export data</h4>
+                        <Button variant="outlined" onClick={() => trashbins && onExportTrashBins(trashbins)}>Export TrashBin List</Button>
+                        <Button variant="outlined" onClick={() => users && onExportUsers(users)}>Export User List</Button>
+                        <Button variant="outlined" onClick={() => feedbacks && onExportFeedbacks(feedbacks)}>Export Feddbacks List</Button>
+                        <Button variant="outlined" onClick={() => trashbins && onExportSugestedTrashBins(trashbins)}>Export Suggested Bin List</Button>
                     </div>
                 </div>
             </>
