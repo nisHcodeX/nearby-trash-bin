@@ -70,24 +70,24 @@ const TrashBinList = () => {
     e.preventDefault();
     addReviewAssync();
   }
-  const binStatusRender = (status : BIN_STATUS) => {
+  const binStatusRender = (status: BIN_STATUS) => {
     let statusText = "";
-    switch(status){
-      case BIN_STATUS.EMPTY :
-      statusText = 'EMPTY'
-      break;
-      case BIN_STATUS.HALF :
-      statusText = 'HALF'
-      break;
-      case BIN_STATUS.QUARTER :
-      statusText = 'QUARTER'
-      break;
-      case BIN_STATUS.FULL :
-      statusText = 'FULL'
-      break;
-      case BIN_STATUS.THREEQUARTER :
-      statusText = 'THREEQUARTER'
-      break;
+    switch (status) {
+      case BIN_STATUS.EMPTY:
+        statusText = 'EMPTY'
+        break;
+      case BIN_STATUS.HALF:
+        statusText = 'HALF'
+        break;
+      case BIN_STATUS.QUARTER:
+        statusText = 'QUARTER'
+        break;
+      case BIN_STATUS.FULL:
+        statusText = 'FULL'
+        break;
+      case BIN_STATUS.THREEQUARTER:
+        statusText = 'THREEQUARTER'
+        break;
       default: statusText = 'EMPTY'
     }
 
@@ -110,7 +110,7 @@ const TrashBinList = () => {
       >
 
         {!completeDispose ? <div>
-          <DirectionContainer lat={selectedbin?.latitude} lng={selectedbin?.longitude}/>
+          <DirectionContainer lat={selectedbin?.latitude} lng={selectedbin?.longitude} />
           <div className='px-4 pb-4'>
             <Button variant="success" className='mt-2 w-100' onClick={() => setCompleteDispose(true)}>
               Complete Trash Dispose
@@ -163,40 +163,40 @@ const TrashBinList = () => {
       </Modal>
       {binList && binList.length > 0 ?
         binList.map((bin: TrashBinRes) =>
-          bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED &&
-          <TrashBinCard key={bin.id}>
-            <>
-              <div className={`d-flex flex-column justify-content-center align-items-center gap-5`}>
-                <div className={`home-trash-bin-wrapper p-4 ${binHighlight(bin)}`}>
-                  <div className='home-trash-bin-img-wrapper'>
-                    <img className='home-trash-bin-img-wrapper list-bin-image' src={bin.imageUrl} />
-                  </div>
-                  <div style={{ backgroundImage: `url(${TrashBin})` }} className='list-trash-bin pt-3'>
-                    <button type="button" className="btn btn-outline-secondary mt-4" onClick={() => findRouteClick(bin)}>Find Route</button>
-                  </div>
-                  <div className='list-trash-bin-text-container d-flex flex-column justify-content-center align-items-center gap-2 mt-6'>
-                    <GeocodingAutocomplete initialLat={bin.latitude} initialLng={bin.longitude} disabled />
-                    {binStatusRender(bin?.feedbacks[0]?.latestFeedback)}
-                    <div>
-                      <p >
-                        Trash Type Available to dispose
-                        <br />
-                        {trashTypeRender(bin)}
-                      </p>
-                      {bin.feedbacks[0] ?
-                        <Rating
-                          name="read-only"
-                          readOnly
-                          value={bin.feedbacks[0].ratings}
-                        /> : <Rating name="no-value" value={null} disabled />
-                      }
+          bin.trashBinStatus == BIN_APPROVE_STATUS.APPROVED && !bin.suggestedBin &&
+            <TrashBinCard key={bin.id}>
+              <>
+                <div className={`d-flex flex-column justify-content-center align-items-center gap-5`}>
+                  <div className={`home-trash-bin-wrapper p-4 ${binHighlight(bin)}`}>
+                    <div className='home-trash-bin-img-wrapper'>
+                      <img className='home-trash-bin-img-wrapper list-bin-image' src={bin.imageUrl} />
+                    </div>
+                    <div style={{ backgroundImage: `url(${TrashBin})` }} className='list-trash-bin pt-3'>
+                      <button type="button" className="btn btn-outline-secondary mt-4" onClick={() => findRouteClick(bin)}>Find Route</button>
+                    </div>
+                    <div className='list-trash-bin-text-container d-flex flex-column justify-content-center align-items-center gap-2 mt-6'>
+                      <GeocodingAutocomplete initialLat={bin.latitude} initialLng={bin.longitude} disabled />
+                      {binStatusRender(bin?.feedbacks[0]?.latestFeedback)}
+                      <div>
+                        <p >
+                          Trash Type Available to dispose
+                          <br />
+                          {trashTypeRender(bin)}
+                        </p>
+                        {bin.feedbacks[0] ?
+                          <Rating
+                            name="read-only"
+                            readOnly
+                            value={bin.feedbacks[0].ratings}
+                          /> : <Rating name="no-value" value={null} disabled />
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-            </>
-          </TrashBinCard>
+              </>
+            </TrashBinCard>
         )
         :
         <TrashBinCard title='No Trash bin Were Found'>

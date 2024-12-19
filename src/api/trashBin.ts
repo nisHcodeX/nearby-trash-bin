@@ -9,18 +9,18 @@ const base64ToBlob = (base64: string, contentType = 'image/png') => {
     return new Blob([byteArray], { type: contentType });
 };
 
-// Define a service using a base URL and expected endpoints
 export const nearByTrashBinAPI = createApi({
     reducerPath: 'trashBinAPI',
     baseQuery: baseCustomQuery,
     endpoints: (builder) => ({
         addTrashBin: builder.mutation<TrashBinRes, AddTrashBin>({
             query: (data) => {
+                console.log('data', data)
                 const formData = new FormData();
                 if (data.Image.startsWith("data:image")) {
                     const contentType = data.Image.substring(data.Image.indexOf(":") + 1, data.Image.indexOf(";"));
                     const imageBlob = base64ToBlob(data.Image, contentType);
-                    formData.append("Image", imageBlob, "image.png"); // Append as a file with a name
+                    formData.append("Image", imageBlob, "image.png"); 
                 } else {
                     console.error("Invalid image format");
                 }

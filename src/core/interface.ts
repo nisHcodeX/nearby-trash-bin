@@ -40,6 +40,7 @@ export interface AddTrashBin {
     "Plastic": boolean,
     "Glass": boolean,
     "UserId": string
+    "suggestedBin": boolean
 }
 
 export interface TrashBinRes {
@@ -56,6 +57,7 @@ export interface TrashBinRes {
     appUserId: string;
     appUser: any
     feedbacks: any
+    suggestedBin: boolean
 };
 
 export interface FindTrashBin {
@@ -122,5 +124,28 @@ export interface FeedbackRes {
     trashBin: any | null;
     latestFeedback: number;
 }
+
+export interface InferenceResult {
+    inference_id: string;
+    time: number;
+    image: {
+        width: number;
+        height: number;
+    };
+    predictions: Prediction[];
+}
+
+interface Prediction {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    confidence: number;
+    class: string;
+    class_id: number;
+    detection_id: string;
+}
+
+
 
 
